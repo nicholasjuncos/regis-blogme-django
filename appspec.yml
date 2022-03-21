@@ -1,0 +1,38 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/website
+permissions:
+  - object: /home/ubuntu/website
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 777
+hooks:
+  ApplicationStop:
+    - location: scripts/stop_gunicorn_nginx.sh
+      timeout: 100
+      runas: ubuntu
+  BeforeInstall:
+    - location: scripts/clean_directory.sh
+      timeout: 100
+      runas: ubuntu
+    - location: scripts/install_os_applications.sh
+      timeout: 6000
+      runas: ubuntu
+  AfterInstall:
+    - location: scripts/move_env.sh
+      timeout: 200
+      runas: ubuntu
+    - location: scripts/migrate.sh
+      timeout: 100
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/restart_gunicorn_nginx.sh
+      timeout: 100
+      runas: ubuntu
+  BeforeAllowTraffic:
+    - location: scripts/start_supervisor.sh
+      timeout: 100
+      runas: ubuntu
