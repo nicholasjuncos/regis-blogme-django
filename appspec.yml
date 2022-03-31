@@ -23,8 +23,11 @@ hooks:
       runas: ubuntu
   AfterInstall:
     - location: scripts/move_env.sh
-      timeout: 200
+      timeout: 600
       runas: ubuntu
+    - location: scripts/collect_static.sh
+        timeout: 600
+        runas: ubuntu
     - location: scripts/migrate.sh
       timeout: 100
       runas: ubuntu

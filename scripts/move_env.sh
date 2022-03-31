@@ -19,6 +19,3 @@ cd /home/ubuntu/website
 pip install -r requirements.txt
 pip install gunicorn
 pip install boto3
-sudo mkdir /home/ubuntu/website/staticfiles
-sudo chmod -R 777 /home/ubuntu/website/staticfiles
-./manage.py collectstatic
