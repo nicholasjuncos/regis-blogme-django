@@ -31,10 +31,6 @@ hooks:
     - location: scripts/migrate.sh
       timeout: 100
       runas: ubuntu
-  ApplicationStart:
-    - location: scripts/restart_gunicorn_nginx.sh
-      timeout: 100
-      runas: ubuntu
   BeforeAllowTraffic:
     - location: scripts/start_supervisor.sh
       timeout: 100
