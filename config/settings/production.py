@@ -8,8 +8,8 @@ from dj_database_url import parse as db_url
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env('SECRET_KEY')
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['example.com'], cast=list)
-
+# ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['example.com'], cast=list)
+ALLOWED_HOSTS = ['api.regis-blog-me.com']
 # DATABASES
 # ------------------------------------------------------------------------------
 DATABASES = {
