@@ -26,8 +26,8 @@ hooks:
       timeout: 600
       runas: ubuntu
     - location: scripts/collect_static.sh
-        timeout: 600
-        runas: ubuntu
+      timeout: 600
+      runas: ubuntu
     - location: scripts/migrate.sh
       timeout: 100
       runas: ubuntu
