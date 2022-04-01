@@ -1,15 +1,19 @@
+import requests
+from dj_database_url import parse as db_url
+
 from .base import *
 from .base import env
-# import sentry_sdk
-# from sentry_sdk.integrations.django import DjangoIntegration
-# from sentry_sdk.integrations.celery import CeleryIntegration
-from dj_database_url import parse as db_url
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env('SECRET_KEY')
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 # ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['example.com'], cast=list)
 ALLOWED_HOSTS = ['api.regis-blog-me.com']
+try:
+    EC2_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4').text
+    ALLOWED_HOSTS.append(EC2_IP)
+except requests.exceptions.RequestException:
+    pass
 # DATABASES
 # ------------------------------------------------------------------------------
 DATABASES = {
@@ -190,13 +194,16 @@ EMAIL_USE_TLS = True
 # TODO: Update the env variable for DJANGO_SENTRY_DSN for production
 SENTRY_DSN = env('DJANGO_SENTRY_DSN', default='')
 # SENTRY_DSN = "https://243486832c6a43158fe4b4f5700ece19@o109504.ingest.sentry.io/240936"
-# sentry_sdk.init(
-#     dsn=SENTRY_DSN,
-#     integrations=[DjangoIntegration(), CeleryIntegration()],
-#     traces_sample_rate=0.25,
-#     _experiments={"auto_enabling_integrations": True},
-#     send_default_pii=True
-# )
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=0.25,
+        _experiments={"auto_enabling_integrations": True},
+        send_default_pii=True
+    )
 
 # STATIC_HOST = env('DJANGO_STATIC_HOST', default='')
 # STATIC_URL = STATIC_HOST + '/staticfiles/'
