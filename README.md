@@ -1,7 +1,7 @@
 # React-Django-Blog
 
 ## Requirements
-* Python 3.9
+* Python 3.8
 * PostgreSQL
 * Node v.14.16.1
 * npm 7.11.2
