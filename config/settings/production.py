@@ -192,16 +192,15 @@ EMAIL_USE_TLS = True
 
 # Sentry Configuration
 # TODO: Update the env variable for DJANGO_SENTRY_DSN for production
-SENTRY_DSN = env('DJANGO_SENTRY_DSN', default='')
-# SENTRY_DSN = "https://243486832c6a43158fe4b4f5700ece19@o109504.ingest.sentry.io/240936"
+# SENTRY_DSN = env('DJANGO_SENTRY_DSN', default='')
+SENTRY_DSN = "https://83ba5579ad964d78947490b8f007d8c5@o859262.ingest.sentry.io/6302874"
 if SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
-        traces_sample_rate=0.25,
-        _experiments={"auto_enabling_integrations": True},
+        traces_sample_rate=1.0,
         send_default_pii=True
     )
 
