@@ -74,11 +74,11 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   # authentication
                   # path('accounts/', include('allauth.urls')),
-                  path('api/', include(router)),
-                  path('api/auth-token/', obtain_auth_token, name='obtain-auth-token'),
-                  path('api/auth/', include('dj_rest_auth.urls')),
-                  path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
-                  path('api/health-check/', health_check),
+                  path('auth-token/', obtain_auth_token, name='obtain-auth-token'),
+                  path('auth/', include('dj_rest_auth.urls')),
+                  path('auth/registration/', include('dj_rest_auth.registration.urls')),
+                  path('health-check/', health_check),
+                  path('', include(router)),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
