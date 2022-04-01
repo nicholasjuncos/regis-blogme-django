@@ -14,6 +14,11 @@ try:
     ALLOWED_HOSTS.append(EC2_IP)
 except requests.exceptions.RequestException:
     pass
+
+CORS_ORIGIN_WHITELIST = (
+    'https://regis-blog-me.com',
+)
+
 # DATABASES
 # ------------------------------------------------------------------------------
 DATABASES = {
