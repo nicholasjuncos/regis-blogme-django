@@ -3,6 +3,19 @@ from dj_database_url import parse as db_url
 
 from .base import *
 from .base import env
+from .aws_secrets_manager import get_secret
+
+AWS_ACCESS_KEY_ID = env('DJANGO_AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY')
+AWS_REGION_NAME = env('DJANGO_AWS_REGION_NAME', default='us-east-1')
+
+AWS_SECRETS_MANAGER_SECRET_NAME = env('DJANGO_AWS_SECRETS_MANAGER_SECRET_NAME', default=None)
+
+if AWS_SECRETS_MANAGER_SECRET_NAME:
+    secrets = get_secret(AWS_SECRETS_MANAGER_SECRET_NAME, AWS_REGION_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+    import os
+    for key in secrets:
+        os.environ[key] = secrets.get(key)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env('SECRET_KEY')
@@ -80,14 +93,12 @@ ADMIN_URL = env('ADMIN_URL', default='admin/')
 # See: http://django-storages.readthedocs.io/en/latest/index.html
 INSTALLED_APPS += ['storages', ]
 
-AWS_ACCESS_KEY_ID = env('DJANGO_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = env('DJANGO_AWS_STORAGE_BUCKET_NAME')
 AWS_AUTO_CREATE_BUCKET = True
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = True
 AWS_S3_SIGNATURE_VERSION = 's3v4'
-AWS_S3_REGION_NAME = 'us-east-1'
+AWS_S3_REGION_NAME = env('DJANGO_AWS_S3_REGION_NAME', default=AWS_REGION_NAME)
 
 # AWS cache settings, don't change unless you know what you're doing:
 AWS_EXPIRY = 60 * 60 * 24 * 7

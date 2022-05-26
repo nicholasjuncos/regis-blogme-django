@@ -1,18 +1,24 @@
+# Use this code snippet in your app.
+# If you need more information about configurations or implementing the sample code, visit the AWS docs:   
+# https://aws.amazon.com/developers/getting-started/python/
+
 import boto3
 import base64
+import json
 from botocore.exceptions import ClientError
 
 
-def get_secret():
-
-    secret_name = "Production-Blog-me-backend"
-    region_name = "us-east-1"
+def get_secret(secret_name, region_name, aws_access_key_id, aws_secret_access_key):
+    secret_name = secret_name
+    region_name = region_name
 
     # Create a Secrets Manager client
     session = boto3.session.Session()
     client = session.client(
         service_name='secretsmanager',
-        region_name=region_name
+        region_name=region_name,
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key
     )
 
     # In this sample we only handle the specific exceptions for the 'GetSecretValue' API.
@@ -49,5 +55,11 @@ def get_secret():
         # Depending on whether the secret is a string or binary, one of these fields will be populated.
         if 'SecretString' in get_secret_value_response:
             secret = get_secret_value_response['SecretString']
+            if type(secret) == str:
+                secret = json.loads(secret)
+            return secret
         else:
             decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
+            if type(decoded_binary_secret) == str:
+                decoded_binary_secret = json.loads(decoded_binary_secret)
+            return decoded_binary_secret
